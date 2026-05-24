@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MESIN PENGHANCUR KESOMBONGAN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Reset & Base Style */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Pembatas Rasio 9:16 (Mobile Viewport) */
+        .phone-wrapper {
+            width: 100%;
+            max-width: 412px; /* Standar Lebar HP */
+            height: 100vh;
+            max-height: 732px; /* Standar Tinggi HP 9:16 */
+            position: relative;
+            background: linear-gradient(rgba(0,0,0,0.75), rgba(15, 0, 0, 0.85)), 
+                        url('https://images.unsplash.com/photo-1505635552518-3448ff116af3?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 12px 5px;
+            border-bottom: 2px solid #ff0000;
+            z-index: 10;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: #888;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .nav-btn.active {
+            color: #fff;
+            border-color: #ff0000;
+            background: #ff0000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+            text-shadow: 0 0 5px #000;
+        }
+
+        /* Slider Container (Horizontal) */
+        .slider-wrapper {
+            flex: 1;
+            display: flex;
+            width: 300%; /* 3 Slide = 300% */
+            transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            height: calc(100% - 50px);
+        }
+
+        .slide {
+            width: 33.333%; /* Tiap slide mengambil 1/3 dari total wrapper */
+            height: 100%;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow-y: auto;
+        }
+
+        /* Slide 1 Styles */
+        .title-horror {
+            font-family: 'Creepster', cursive;
+            font-size: 28px;
+            color: #ff0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+            margin-bottom: 25px;
+            line-height: 1.2;
+        }
+
+        .sub-horror {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .text-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #ccc;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* Slide 2 Styles (Hologram & Floating Animation) */
+        .photos-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .hologram-frame {
+            width: 48%;
+            position: relative;
+            border: 1px solid rgba(255, 0, 0, 0.5);
+            background: rgba(255, 0, 0, 0.05);
+            padding: 5px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+            animation: floatAnim 3s ease-in-out infinite alternate;
+        }
+
+        /* Efek jeda gerak untuk foto kanan agar tidak monoton bergantian */
+        .hologram-frame:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .hologram-frame img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            filter: grayscale(30%) sepia(20%) hue-rotate(320deg) contrast(120%);
+            opacity: 0.85;
+            border: 1px solid #ff0000;
+        }
+
+        /* Scanline effect khas hologram */
+        .hologram-frame::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .bio-title {
+            font-size: 14px;
+            color: #ff0000;
+            text-align: left;
+            width: 100%;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .bio-val {
+            font-size: 14px;
+            color: #fff;
+            text-align: left;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .bio-desc {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 10px;
+            line-height: 1.4;
+            border-top: 1px dashed #444;
+            padding-top: 10px;
+        }
+
+        /* Slide 3 Styles (Hologram Link Sosmed) */
+        .link-box {
+            width: 100%;
+            background: rgba(15, 5, 5, 0.7);
+            border: 1px solid #ff0000;
+            border-left: 5px solid #ff0000;
+            margin-bottom: 18px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-box::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+
+        .link-box:hover {
+            background: #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            transform: scale(1.02);
+            text-shadow: 0 0 5px #000;
+        }
+
+        .link-box i {
+            font-size: 24px;
+            margin-right: 15px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .link-text h3 {
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: left;
+        }
+        
+        .link-text p {
+            font-size: 11px;
+            color: #888;
+            text-align: left;
+        }
+        .link-box:hover .link-text p {
+            color: #fff;
+        }
+
+        /* Animations */
+        @keyframes floatAnim {
+            0% {
+                transform: translateY(0px);
+                box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2);
+            }
+            100% {
+                transform: translateY(-12px);
+                box-shadow: 0 20px 25px rgba(255, 0, 0, 0.4);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-wrapper">
+        
+        <div class="nav-container">
+            <button class="nav-btn active" onclick="changeSlide(0)">Duck Porte</button>
+            <button class="nav-btn" onclick="changeSlide(1)">Lil Porte</button>
+            <button class="nav-btn" onclick="changeSlide(2)">Last Porte</button>
+        </div>
+
+        <div class="slider-wrapper" id="mainSlider">
+            
+            <div class="slide">
+                <h1 class="title-horror">WELCOME TO MESIN PENGHANCUR KESOMBONGAN</h1>
+                <h2 class="sub-horror">GW PUTTRA 🇩🇰</h2>
+                <p class="text-content">
+                    dan gw org yg paling tidak suka dengan ke semena semenaan ya itu menindas org lemah, menindas org yg miskin / terpuruk hanya karna kau lebih kaya ataupun lebih berkuasa.
+                </p>
+                <p class="text-content" style="color: #ff4d4d; border-left: 2px solid #ff0000; padding-left: 10px;">
+                    dan satu lagi jika kamu hanya bisa menyombongkan skill temen / orang lain maka jangan pernah meninggi di depanku karna gw bisa lebih dri apa yga kau sebutin.
+                </p>
+            </div>
+
+            <div class="slide">
+                <div class="photos-container">
+                    <div class="hologram-frame">
+                        <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=500" alt="Puttra Left">
+                    </div>
+                    <div class="hologram-frame">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=500" alt="Puttra Right">
+                    </div>
+                </div>
+
+                <div class="bio-title">NAME :</div>
+                <div class="bio-val">puttra yourfav</div>
+                
+                <div class="bio-title">AGE :</div>
+                <div class="bio-val">20</div>
+                
+                <div class="bio-title">FROM :</div>
+                <div class="bio-val">made in indonesian</div>
+
+                <p class="bio-desc">
+                    gw programer pemula dan gw hanya berusaha semaksimal mungkin untuk berkembang☠️
+                </p>
+            </div>
+
+            <div class="slide">
+                <h2 class="title-horror" style="font-size: 22px; margin-bottom: 20px;">CONNECT WITH ME</h2>
+                
+                <a href="https://chat.whatsapp.com/DjrfX7WNaJ7F6UXRdzpJIw?s=cl&p=a&mlu=0" target="_blank" class="link-box">
+                    <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+                    <div class="link-text">
+                        <h3>Whatsapp</h3>
+                        <p>Gabung ke Group Whatsapp</p>
+                    </div>
+                </a>
+
+                <a href="https://t.me/zienntrezz" target="_blank" class="link-box">
+                    <i class="fab fa-telegram-plane" style="color: #0088cc;"></i>
+                    <div class="link-text">
+                        <h3>Telegram</h3>
+                        <p>Hubungi via Telegram</p>
+                    </div>
+                </a>
+
+                <a href="https://www.tiktok.com/@gw.puttra.bray?_r=1&_t=ZS-96dNRGTfqUh" target="_blank" class="link-box">
+                    <i class="fab fa-tiktok" style="color: #ef233c;"></i>
+                    <div class="link-text">
+                        <h3>Tiktok</h3>
+                        <p>Kunjungi Akun Tiktok</p>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function changeSlide(slideIndex) {
+            // Geser slider container ke kanan berdasar index (0, 1, 2)
+            const slider = document.getElementById('mainSlider');
+            const percentage = slideIndex * -33.333;
+            slider.style.transform = `translateX(${percentage}%)`;
+
+            // Atur tombol aktif
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach((btn, index) => {
+                if(index === slideIndex) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+  </html>
